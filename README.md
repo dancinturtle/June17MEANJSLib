@@ -1,6 +1,5 @@
 # June17MEANJSLib
 
-Deck of cards
 
 Fork this repo. You will then have your own June17MEANJSLib repo.
 
