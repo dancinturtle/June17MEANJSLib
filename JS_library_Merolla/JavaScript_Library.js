@@ -1,30 +1,39 @@
-
-
+// Underscore assignment
+// After function definitions are example calls (using console.log)
 
 var _ = {
-	map: function(arr) {
-		for (var i = 0; i<arr.length; i++) {
-			console.log(arr[i]);
+	// Produces a new array of values by mapping each value in list through a transformation function (iteratee). The iteratee is passed three arguments: the value, then the index (or key) of the iteration, and finally a reference to the entire list.
+	map: function(arr, callback) {
+		for (index in arr) {
+			arr[index] = callback(arr[index]);
 		}
+		return arr;
 	},
-	reduce: function(arr,numRemove) {
-		if (arr.length < numRemove) {
-			arr.length = 0;
+	// Also known as inject and foldl, reduce boils down a list of values into a single value. Memo is the initial state of the reduction, and each successive step of it should be returned by iteratee. The iteratee is passed four arguments: the memo, then the value and index (or key) of the iteration, and finally a reference to the entire list.
+	reduce: function(arr,callback) {
+		if (arr.length == 0) {
+			return 0;
+		}
+		if (arr.length == 1) {
+			return arr[0];
 		}
 		else {
-			arr.length = arr.length - numRemove;
+			var memoizer = arr[0]; // set memoizer to start as the first element
+			for (var i = 1; i<arr.length; i++) {
+				memoizer += arr[i];
+			}			
 		}
-		return arr
+		return memoizer;
 	},
-	find: function(arr,value) {   
+	// Looks through each value in the list, returning the first one that passes a truth test (predicate), or undefined if no value passes the test. The function returns as soon as it finds an acceptable element, and doesn't traverse the entire list.
+	find: function(arr,callback) {   
 		for (var i = 0; i<arr.length; i++) {
-			if (arr[i] == value) {
-				console.log("Item found!");
-				return;
+			if (callback(arr[i])) {
+				return arr[i];
 			}
 		}
-		console.log("Item not found");
 	},
+	// Looks through each value in the list, returning an array of all the values that pass a truth test (predicate).
 	filter: function(arr, callback) {
 		var filterArray = [];
 		for (var i = 0; i<arr.length; i++) {
@@ -34,6 +43,7 @@ var _ = {
 		}
 		return filterArray;
 	},
+	// Returns the values in list without the elements that the truth test (predicate) passes. The opposite of filter.
 	reject: function(arr, callback) { // returns only ODD values
 		var rejectArray = [];
 		for (var i = 0; i<arr.length; i++) {
@@ -46,6 +56,7 @@ var _ = {
 		}
 		return rejectArray;
 	},
+	// As-is, the "where" function below will be able to accept multiple key:value pairs in the properties dictionary however if they are in a different order from the order in the dictionaries in the list of plays it will not work (ordering is needed to resolve this issue)
 	where: function(arr,properties) { // where will look through an array of dictionaries and return an array of the dictionaries which matched our properties input
 		var whereArray = [];
 		var hashedArray = [];
@@ -74,20 +85,28 @@ var _ = {
 	}
 }
 
-var listOfPlays = [{title:"SomeStuff",author:"Kris",year:1986},{title:"Things and Stuff",author:"Jerome",year:2015},{title:"Can of Beans",author:"Kris",year:2011}]
+// // Example for the "map" method
+// console.log(_.map([1,2,3],function(num){ return num*3; }));
 
-console.log(_.where(listOfPlays,{author:"Kris", year:1986}))
+// // Example of the reduce method
+// console.log(_.reduce([1,2,3],function(memoizer,num){ return memoizer + number }));
 
-// var evens = _.filter([1,2,"Kris",4,5,6],function(num){ return typeof(num)=="string" })
-// console.log(evens);
+// // Example of the find method
+// console.log(_.find([1,5,3,4,8],function(num){ return num%2==0; })); // function callback here returns num if even
 
-// console.log(_.reject(["Kris",1,2,3,4,5,6,7,8,9]));
+// // Example of the filter method
+// console.log(_.filter([1,2,3,4,5,6,7,8,9],function(num){ return num%2==0; }));
 
-// console.log(_.filter([1,2,4],1));
+// // Example of the reject method
+// console.log(_.reject([1,2,3,4,5,6,7,8,9],function(num){ return num%2==0; }));
 
-// _.find([1,"Kris",4,7],"Kris");
+// // Example for use of "where" method
+// var listOfPlays = [{title:"SomeStuff",author:"Kris",year:1986},{title:"Things and Stuff",author:"Jerome",year:2015},{title:"Can of Beans",author:"Kris",year:2011}]
+// console.log(_.where(listOfPlays,{author:"Kris", year:1986}))
 
-// _.map([1,2,3,4,"hello"]);
 
-// console.log(_.reduce([1,2,3,4,5],6));
+
+
+
+
 
